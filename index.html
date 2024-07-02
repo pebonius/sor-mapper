@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sor-mapper</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="tileset-container">
+      <canvas width="512" height="512" id="tileset-canvas"></canvas>
+    </div>
+    <div id="map-container">
+      <canvas width="320" height="320" id="map-canvas"></canvas>
+    </div>
+    <div id="array-textarea-container">
+      <p><label for="map-array">Map array:</label></p>
+      <textarea
+        name="map-array"
+        id="map-array-textarea"
+        cols="60"
+        rows="11"
+      ></textarea>
+    </div>
+
+    <script src="./scripts/index.js" type="module"></script>
+  </body>
+</html>
