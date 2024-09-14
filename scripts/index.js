@@ -11,6 +11,7 @@ const tilesetCtx = tilesetCanvas.getContext("2d");
 const mapCanvas = document.getElementById("map-canvas");
 const mapCtx = mapCanvas.getContext("2d");
 const mapArrayTextarea = document.getElementById("map-array-textarea");
+const loadButton = document.getElementById("load-button");
 const content = new ContentManager();
 let tileset = null;
 let tileSize = 16;
@@ -19,6 +20,8 @@ let selectedTile = null;
 let selectedRow = null;
 let selectedCol = null;
 let defaultTile = 255;
+let mapWidth = 10;
+let mapHeight = 10;
 let map = null;
 let mapArray = null;
 
@@ -57,10 +60,10 @@ const drawTileset = () => {
 };
 
 const createEmptyMap = () => {
-  map = new Array(10);
+  map = new Array(mapHeight);
 
   for (let y = 0; y < map.length; y++) {
-    map[y] = new Array(10);
+    map[y] = new Array(mapWidth);
 
     for (let x = 0; x < map[y].length; x++) {
       map[y][x] = defaultTile;
@@ -172,6 +175,10 @@ const placeTile = (translatedPos) => {
   const mapPosX = Math.floor(translatedPos.x / tileSize);
   const mapPosY = Math.floor(translatedPos.y / tileSize);
 
+  if (mapPosX >= mapWidth || mapPosY >= mapHeight) {
+    return;
+  }
+
   map[mapPosY][mapPosX] = selectedTile;
 
   Debug.log(`placed tile ${selectedTile} at ${mapPosX}, ${mapPosY}`);
@@ -231,6 +238,31 @@ const writeMapArray = () => {
   mapArrayTextarea.value = mapArrayString;
 };
 
+const setLoadButtonEvent = () => {
+  loadButton.onpointerdown = (e) => {
+    loadMapFromMapArray();
+  };
+};
+
+const loadMapFromMapArray = () => {
+  let mapArrayString = mapArrayTextarea.value;
+
+  mapArrayString = mapArrayString.replaceAll("[", "");
+  mapArrayString = mapArrayString.replaceAll("]", "");
+  mapArrayString = mapArrayString.replaceAll(" ", "");
+  mapArrayString = mapArrayString.replaceAll("\n", "");
+
+  const tiles = mapArrayString.split(",");
+
+  map = new Array(mapHeight);
+
+  for (let y = 0; y < map.length; y++) {
+    map[y] = tiles.slice(y * mapWidth, y * mapWidth + mapWidth);
+  }
+
+  drawMap();
+};
+
 const initialize = () => {
   setupCanvas(tilesetCanvas);
   setupCanvas(mapCanvas);
@@ -243,6 +275,7 @@ const initialize = () => {
   setMapPointerEvent();
   createMapArray();
   writeMapArray();
+  setLoadButtonEvent();
 };
 
 const loadContent = () => {

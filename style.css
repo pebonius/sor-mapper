@@ -16,6 +16,12 @@ body {
   text-align: center;
 }
 
+button {
+  padding: 5px;
+  background-color: inherit;
+  color: inherit;
+}
+
 textarea {
   max-width: 100%;
   background-color: inherit;
